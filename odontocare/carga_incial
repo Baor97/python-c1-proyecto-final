@@ -1,0 +1,85 @@
+import requests
+
+BASE_URL = "http://127.0.0.1:5000"
+
+# Login
+login_data = {
+    "username": "admin",
+    "password": "1234"
+}
+
+login_response = requests.post(
+    f"{BASE_URL}/auth/login",
+    json=login_data
+)
+
+token = login_response.json()["token"]
+
+print("TOKEN OBTENIDO")
+print(token)
+print("\n")
+
+
+headers = {
+    "Authorization": f"Bearer {token}"
+}
+
+# Crear paciente
+paciente = requests.post(
+    f"{BASE_URL}/admin/pacientes",
+    json={
+        "nombre": "Marc Badia",
+        "telefono": "654321789"
+    },
+    headers=headers
+)
+
+print("PACIENTE:")
+print(paciente.json())
+print("\n")
+
+
+# Crear doctor
+doctor = requests.post(
+    f"{BASE_URL}/admin/doctores",
+    json={
+        "nombre": "Dr. Ortecho",
+        "especialidad": "Dermatologia"
+    },
+    headers=headers
+)
+
+print("DOCTOR:")
+print(doctor.json())
+print("\n")
+
+# Crear centro
+centro = requests.post(
+    f"{BASE_URL}/admin/centros",
+    json={
+        "nombre": "Hospital Clinic",
+        "direccion": "Barcelona"
+    },
+    headers=headers
+)
+
+print("CENTRO:")
+print(centro.json())
+print("\n")
+
+# Crear cita
+cita = requests.post(
+    f"{BASE_URL}/citas",
+    json={
+        "fecha": "2026-06-25 10:00",
+        "motivo": "Revision general",
+        "id_paciente": 1,
+        "id_doctor": 1,
+        "id_centro": 1
+    },
+    headers=headers
+)
+
+print("CITA CREADA:")
+print(cita.json())
+print("\n")
